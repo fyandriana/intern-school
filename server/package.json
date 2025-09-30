@@ -1,0 +1,33 @@
+{
+  "name": "server-school",
+  "version": "1.0.0",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "nodemon index.js",
+    "start": "node index.js",
+    "db:init": "cross-env DB_PATH=./src/db/school.db node src/db/init.mjs",
+    "db:seed": "cross-env DB_PATH=./src/db/school.db node src/db/seed.mjs",
+    "db:reset": "rimraf ./src/db/school.db ./src/db/school.db-wal ./src/db/school.db-shm && npm run db:init && npm run db:seed",
+    "lint": "eslint .",
+    "format": "prettier --write ."
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "better-sqlite3": "^12.4.1",
+    "cors": "^2.8.5",
+    "dotenv": "^17.2.3",
+    "express": "^5.1.0"
+  },
+  "devDependencies": {
+
+    "eslint": "^9.36.0",
+    "nodemon": "^3.1.10",
+    "prettier": "^3.6.2",
+    "rimraf": "^6.0.1"
+  }
+}
