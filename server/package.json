@@ -7,8 +7,8 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "nodemon index.js",
     "start": "node index.js",
-    "db:init": "cross-env DB_PATH=./src/db/school.db node src/db/init.mjs",
-    "db:seed": "cross-env DB_PATH=./src/db/school.db node src/db/seed.mjs",
+    "db:init": "node src/db/init.mjs",
+    "db:seed": "node src/db/seed.mjs",
     "db:reset": "rimraf ./src/db/school.db ./src/db/school.db-wal ./src/db/school.db-shm && npm run db:init && npm run db:seed",
     "lint": "eslint .",
     "format": "prettier --write ."
