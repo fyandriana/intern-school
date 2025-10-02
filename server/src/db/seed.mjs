@@ -5,7 +5,7 @@ import Database from 'better-sqlite3';
 
 const ROOT = process.cwd();
 const DB_DIR = path.join(ROOT, 'src/db');
-const DB_PATH = path.join(DB_DIR, 'feedback.db');
+const DB_PATH = path.join(DB_DIR, 'school.db');
 const SEED_PATH = path.join(DB_DIR, 'seed.sql');
 
 // Basic checks
