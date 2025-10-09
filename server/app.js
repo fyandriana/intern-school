@@ -2,6 +2,8 @@
 import express from "express";
 import cors from "cors";
 import usersRouter from "./src/users/users.routes.js";
+import coursesRouter from "./src/courses/courses.routes.js";
+import quizzesRouter from "./src/quizzes/quizzes.routes.js";
 import { errorMiddleware } from "./src/errors.js"; // or inline one below
 
 const app = express();
@@ -10,6 +12,8 @@ app.use(express.json());
 app.use(cors({ origin: ["http://localhost:5173", "http://localhost:3001"] }));
 
 app.use("/api/users", usersRouter);
+app.use("/api/courses", coursesRouter);
+app.use("/api/quizzes", quizzesRouter);
 
 // 404
 app.use((req, res) => res.status(404).json({ code: "NOT_FOUND", message: "Route not found" }));
