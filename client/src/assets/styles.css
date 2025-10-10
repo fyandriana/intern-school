@@ -1,0 +1,345 @@
+/* =========================
+   Design tokens (theme)
+========================= */
+:root {
+    --text: #111827;
+    --muted: #6b7280;
+
+    --bg: #ffffff;
+    --bg-app: #f7f7f7;
+    --bg-muted: #f8fafc;
+
+    --border: #e5e7eb;
+    --shadow-1: 0 1px 2px rgba(0, 0, 0, 0.04);
+    --shadow-card: 0 8px 20px rgba(0, 0, 0, 0.05);
+    --shadow-modal: 0 20px 50px rgba(0, 0, 0, 0.25);
+
+    --brand: #3b82f6;
+    --brand-600: #2563eb;
+    --indigo-100: #eef2ff;
+    --indigo-200: #c7d2fe;
+
+    --danger: #b00020;
+    --danger-bg: #fef2f2;
+    --danger-br: #fecaca;
+
+    --success: #065f46;
+    --success-bg: #f0fdf4;
+    --success-br: #bbf7d0;
+
+    font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
+    line-height: 1.4;
+}
+
+/* =========================
+   Resets & base
+========================= */
+* { box-sizing: border-box; }
+
+body {
+    margin: 0;
+    background: var(--bg-app);
+    color: var(--text);
+}
+a:hover{color:  var(--brand);}
+/* Vite demo root — keep, but our containers reset text-align */
+#root {
+   /* max-width: 1280px; */
+    margin: 0 auto;
+   /* padding: 2rem; */
+    text-align: center;
+}
+
+.container {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 24px;
+    text-align: left; /* prevent #root from centering app UI */
+}
+
+/* Generic header (page-level) */
+header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+}
+header h1 { margin: 0; font-size: 1.5rem; }
+
+main { margin-top: 20px; }
+
+footer { margin-top: 24px; color: #666; }
+
+/* Utilities */
+.stack { display: grid; gap: 12px; }
+.mt-0 { margin-top: 0; }
+.table-wrap { overflow: auto; }
+
+/* =========================
+   Buttons
+========================= */
+button,
+.btn {
+    padding: 8px 12px;
+    border: 1px solid var(--border);
+    background: #fff;
+    border-radius: 8px;
+    cursor: pointer;
+    font: inherit;
+    margin-top: 10px;
+}
+button:hover,
+.btn:hover { background: #f0f0f0; }
+button.active { border-color: #333; }
+
+.btn--primary {
+    border-color: var(--brand);
+    background: var(--brand);
+    color: #fff;
+}
+.btn--primary:hover { background: var(--brand-600); }
+.btn--block { width: 100%; }
+
+/* =========================
+   Cards
+========================= */
+.card {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 16px;
+    box-shadow: var(--shadow-1);
+}
+
+/* If you still want Vite demo spacing on a card, add .card--demo */
+.card--demo { padding: 2em; }
+
+.card--form {
+    padding: 20px;
+    box-shadow: var(--shadow-card);
+}
+
+/* =========================
+   Forms
+========================= */
+label {
+    display: grid;
+    gap: 6px;
+    font-size: 0.95rem;
+}
+
+.input,
+.select,
+textarea,
+input {
+    width: 100%;
+    padding: 12px 14px;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    background: #fff;
+    font: inherit;
+    transition: border-color .12s ease, box-shadow .12s ease, background .12s ease;
+}
+
+.input:focus,
+.select:focus,
+textarea:focus,
+input:focus {
+    outline: none;
+    border-color: var(--brand);
+    box-shadow: 0 0 0 3px rgba(59,130,246,.15);
+}
+
+.input.is-invalid { border-color: #ef4444; }
+.input.is-valid { border-color: #10b981; }
+
+.form__header { margin-bottom: 16px; }
+.form__title { margin: 0 0 6px 0; font-size: 20px; }
+.form__subtitle { margin: 0; color: var(--muted); font-size: 14px; }
+
+.form__group { display: grid; gap: 6px; }
+.label { font-weight: 600; font-size: 14px; text-align: left}
+.hint { color: var(--muted); font-size: 12px; }
+
+.input-group { position: relative; display: flex; padding: 8px 0}
+.input-group .input { flex: 1; padding-right: 44px;  }
+.input-group__btn {
+    position: absolute;
+    right: 1px;
+    top: -1px;
+    height: calc(100% - 18px);
+    padding: 0 10px;
+    border: 1px solid transparent;
+    background: #f3f4f6;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 12px;
+    font-weight: 600;
+}
+.input-group__btn:hover { background: #e5e7eb; }
+
+.form__footer { margin-top: 12px; color: var(--muted); font-size: 14px; }
+
+.alert {
+    padding: 10px 12px;
+    border-radius: 10px;
+    border: 1px solid var(--border);
+    background: var(--bg-muted);
+    font-size: 14px;
+}
+.alert--error { border-color: var(--danger-br); background: var(--danger-bg); color: var(--danger); }
+.alert--success { border-color: var(--success-br); background: var(--success-bg); color: var(--success); }
+
+.error { color: var(--danger); }
+.success { color: #0a7a3d; }
+
+/* =========================
+   Tables
+========================= */
+table { width: 100%; border-collapse: collapse; }
+th, td {
+    text-align: left;
+    padding: 8px;
+    border-bottom: 1px solid var(--border);
+}
+
+/* =========================
+   Toolbar
+========================= */
+.toolbar {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 12px;
+}
+
+/* =========================
+   Modal
+========================= */
+.body--modal-open { overflow: hidden; }
+
+.modal-backdrop {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+    display: grid;
+    place-items: center;
+    padding: 16px;
+    animation: fadeIn 150ms ease-out;
+}
+
+.modal-panel {
+    width: 100%;
+    max-width: 640px;
+    background: #fff;
+    border-radius: 16px;
+    box-shadow: var(--shadow-modal);
+    padding: 16px;
+    outline: none;
+    animation: scaleIn 160ms ease-out;
+}
+
+.modal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 12px;
+}
+
+.modal-title {
+    font-size: 1.125rem;
+    font-weight: 600;
+    margin: 0;
+}
+
+.modal-close {
+    border: 0;
+    background: transparent;
+    font-size: 20px;
+    line-height: 1;
+    padding: 4px 8px;
+    cursor: pointer;
+}
+
+.modal-content { max-height: 70vh; overflow: auto; }
+.modal-content ul li { list-style: none; }
+
+@keyframes fadeIn { from { opacity: 0 } to { opacity: 1 } }
+@keyframes scaleIn { from { transform: translateY(4px) scale(0.98); opacity: 0.98 } to { transform: translateY(0) scale(1); opacity: 1 } }
+
+/* =========================
+   Nav
+========================= */
+.nav {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px;
+    border-bottom: 1px solid var(--border);
+    background: var(--bg);
+    box-shadow: var(--shadow-1);
+}
+
+.nav__brand {
+    font-weight: 800;
+    letter-spacing: .2px;
+    padding: 8px 12px;
+    border-radius: 10px;
+}
+
+.nav__spacer { flex: 1; }
+
+.nav a,
+.nav .nav__link {
+    display: inline-flex;
+    align-items: center;
+    padding: 8px 12px;
+    border-radius: 10px;
+    text-decoration: none;
+    color: #1f2937;
+    font-weight: 600;
+    border: 1px solid transparent;
+    transition: background .15s ease, border-color .15s ease, transform .02s ease;
+}
+
+.nav a:hover,
+.nav .nav__link:hover { background: #f3f4f6; }
+
+.nav .nav__link--active {
+    background: var(--indigo-100);
+    border-color: var(--indigo-200);
+}
+
+@media (max-width: 520px) {
+    .nav { flex-wrap: wrap; }
+    .nav__spacer { display: none; }
+}
+
+/* =========================
+   Vite demo logo (kept)
+========================= */
+.logo {
+    height: 6em;
+    padding: 1.5em;
+    will-change: filter;
+    transition: filter 300ms;
+}
+.logo:hover { filter: drop-shadow(0 0 2em #646cffaa); }
+.logo.react:hover { filter: drop-shadow(0 0 2em #61dafbaa); }
+
+@keyframes logo-spin {
+    from { transform: rotate(0deg); }
+    to   { transform: rotate(360deg); }
+}
+@media (prefers-reduced-motion: no-preference) {
+    a:nth-of-type(2) .logo {
+        animation: logo-spin infinite 20s linear;
+    }
+}
+
+/* Vite demo helper */
+.read-the-docs { color: #888; }
+
+/* Normalize anchor in case of empty rule from snippet */
+a { color: inherit; }

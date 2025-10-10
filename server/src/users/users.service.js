@@ -38,6 +38,13 @@ export function getUserByIdSvc(id) {
     return user;
 }
 
+
+export function getUserByEmailSvc(email) {
+    const user = getUserByEmail(email);
+    if (!user) throw new NotFoundError("User not found", { email });
+    return user;
+}
+
 export function listUsersSvc(opts = {}) {
     if (opts.role) assertRole(opts.role);
     const limit = Number(opts.limit ?? 50);
