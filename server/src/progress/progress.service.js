@@ -1,85 +1,74 @@
+import { ValidationError, NotFoundError } from "../middleware/errors.js";
 import {
-    createProgress,
-    getProgressById,
-    listProgresses as daoListProgresses,
-    updateProgress as daoUpdateProgress,
-    deleteProgress as daoDeleteProgress,
+  enrollStudent,
+  getProgressByStudentAndCourse,
+  getStudentCourses,
+  updateProgressByStudentAndCourse,
+  getAllCourses,
+  updateStatusInProgress,
 } from "./progress.dao.js";
-import { NotFoundError, ValidationError, UniqueViolationError } from "../errors.js";
-import {getUserById} from "../users/users.dao.js";
-import {getCourseById} from "../courses/courses.dao.js";
+import { getCourseById } from "../courses/courses.dao.js"; // adjust path if different
 
-function assertNonEmptyString(value, field, { min = 1 } = {}) {
-    if (typeof value !== "string" || value.trim().length < min) {
-        throw new ValidationError(`Invalid ${field}`, { field });
+const VALID_STATUS = new Set(["enrolled", "in_progress", "completed"]);
+
+function validateStatusTransition(prev, next) {
+  if (!next || prev === next) return true;
+  if (prev === "enrolled" && (next === "in_progress" || next === "completed")) return true;
+  if (prev === "in_progress" && next === "completed") return true;
+  return false;
+}
+
+export function enrollSvc({ studentId, courseId }) {
+  if (!Number.isInteger(studentId) || !Number.isInteger(courseId)) {
+    throw new ValidationError("Invalid studentId or courseId");
+  }
+  const course = getCourseById(courseId);
+  if (!course) throw new NotFoundError("Course not found", { courseId });
+
+  // Trigger enforces Student role; UNIQUE makes it idempotent
+  return enrollStudent({ studentId, courseId });
+}
+
+export function getEnrollmentSvc({ studentId, courseId, limit = 20, offset = 0 }) {
+  const row = getProgressByStudentAndCourse(studentId, courseId, limit, offset);
+  if (!row) throw new NotFoundError("Enrollment not found", { studentId, courseId });
+  return row;
+}
+
+export function listMyCoursesSvc({ studentId, limit = 20, offset = 0 }) {
+  return getStudentCourses({ studentId, limit, offset });
+}
+
+export function listAllCoursesSvc({ studentId, limit = 20, offset = 0 }) {
+  return getAllCourses({ studentId, limit, offset });
+}
+
+export function updateEnrollmentSvc({ studentId, courseId, status, score }) {
+  if (status != null && !VALID_STATUS.has(status)) {
+    throw new ValidationError("Invalid status");
+  }
+  if (score != null) {
+    const n = Number(score);
+    if (!Number.isFinite(n) || n < 0 || n > 100) {
+      throw new ValidationError("Score must be between 0 and 100");
     }
-}
-function assertCourse(value) {
-    if (typeof value !== 'number') {
-        throw new ValidationError("Invalid Course", {field: "courseId"});
-    }
-    const course = getCourseById(value);
-    if (!course?.id) throw new ValidationError("Unknown Course");
-}
+    score = n;
+  }
 
-function assertStudent(value) {
-    if (typeof value !== 'number') {
-        throw new ValidationError("Invalid Student", {field: "studentId"});
-    }
-    // check if user is a student
-    const student = getUserById(value);
-    if (student && student.role !== "Student") throw new ValidationError("Unknown Student");
+  const current = getProgressByStudentAndCourse(studentId, courseId);
+  if (!current) throw new NotFoundError("Enrollment not found", { studentId, courseId });
+
+  if (status && !validateStatusTransition(current.status, status)) {
+    throw new ValidationError(`Illegal status transition: ${current.status} → ${status}`);
+  }
+
+  const updated = updateProgressByStudentAndCourse({ studentId, courseId, status, score });
+  if (!updated) throw new NotFoundError("Enrollment not found", { studentId, courseId });
+  return updated;
 }
 
-// ('enrolled', 'in_progress', 'completed')
-function assertStatus(value) {
-    if (!['enrolled', 'in_progress', 'completed'].includes(value)) {
-        throw new ValidationError("Invalid status (must be 'enrolled' or 'in_progress' or 'completed')", { field: "status" });
-    }
-}
-
-
-export function createProgressSvc({ courseId, studentId, status, score}) {
-    assertCourse(courseId);
-    assertStudent(studentId);
-    assertStatus(status);
-    assertCourse(courseId);
-    assertNonEmptyString(score,"score");
-    return createProgress({ courseId, studentId, status, score });
-}
-
-export function getProgressByIdSvc(id) {
-    const progress = getProgressById();
-    if (!progress) throw new NotFoundError("Progress not found", { id });
-    return progress;
-}
-
-export function listProgressesSvc(opts = {}) {
-    if (opts.studentId) assertStudent(opts.studentId);
-    const limit = Number(opts.limit ?? 50);
-    const offset = Number(opts.offset ?? 0);
-    if (!Number.isFinite(limit) || limit < 1 || limit > 200) {
-        throw new ValidationError("Invalid limit (1..200)", { field: "limit" });
-    }
-    if (!Number.isFinite(offset) || offset < 0) {
-        throw new ValidationError("Invalid offset (>=0)", { field: "offset" });
-    }
-    return daoListProgresses({ limit, offset, studentId: opts.studentId });
-}
-
-export function updateProgressSvc(id, patch) {
-    if (patch.courseId !== undefined) assertCourse(patch.courseId);
-    if (patch.studentId !== undefined) assertStudent(patch.studentId);
-    if (patch.status !== undefined) assertStatus(patch.status);
-    if (patch.score !== undefined) assertCourse(patch.score);
-
-    const updated = daoUpdateProgress(id, patch);
-    if (!updated) throw new NotFoundError("Progress not found", { id });
-    return updated;
-}
-
-export function deleteProgressSvc(id) {
-    const ok = daoDeleteProgress(id);
-    if (!ok) throw new NotFoundError("Progress not found", { id });
-    return { deleted: true };
+export function updateStatusInProgressSvc({ studentId, courseId }) {
+  const updated = updateStatusInProgress({ studentId, courseId });
+  if (!updated) throw new NotFoundError("Enrollment not found", { studentId, courseId });
+  return updated;
 }
