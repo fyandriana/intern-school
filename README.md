@@ -1,4 +1,5 @@
-# 🏫 School Management Web App  
+# 🏫 School Management Web App
+
 **Full-Stack Internship Project – Technova IT (Sept–Oct 2025)**  
 Developed by **Fy Andria**
 
@@ -6,15 +7,19 @@ Developed by **Fy Andria**
 
 ## 📋 Overview
 
-The **School Management Web App** is a full-stack educational platform designed to manage courses, teachers, students, quizzes, and progress tracking.  
-It provides separate dashboards for **Teachers** and **Students**, secure authentication, and a modular Node.js + React architecture.  
-This project was developed as part of Fy’s **Software Development Internship at Technova IT**, for **Herzing College Toronto**.
+The **School Management Web App** is a full-stack educational platform designed to manage courses, teachers, students,
+quizzes, and progress tracking.  
+It provides separate dashboards for **Teachers** and **Students**, secure authentication, and a modular Node.js + React
+architecture.  
+This project was developed as part of Fy’s **Software Development Internship at Technova IT**, for **Herzing College
+Toronto**.
 
 ---
 
 ## 🚀 Features
 
 ### 👩‍🏫 Teacher Area
+
 - Create, edit, and delete courses
 - Add and manage quizzes per course
 - View students enrolled in each course
@@ -22,6 +27,7 @@ This project was developed as part of Fy’s **Software Development Internship a
 - Paginated course and student lists
 
 ### 🎓 Student Area
+
 - View all available courses
 - Enroll in or start courses
 - Take quizzes and view results
@@ -29,6 +35,7 @@ This project was developed as part of Fy’s **Software Development Internship a
 - Update personal profile information
 
 ### 🔐 Shared Features
+
 - JWT authentication and role-based access
 - RESTful Express API with modular structure
 - SQLite database for easy development
@@ -49,6 +56,7 @@ intern-school/
 ## ⚙️ Server (Backend)
 
 ### Folder Structure
+
 ```
 server/
 ├── src/
@@ -68,6 +76,7 @@ server/
 ```
 
 ### Server Scripts
+
 ```json
 {
   "scripts": {
@@ -82,20 +91,22 @@ server/
 ```
 
 #### Script Descriptions
-| Script | Description |
-|---------|-------------|
-| `npm run dev` | Run server with nodemon (auto-reload) |
-| `npm start` | Run server (production-style) |
-| `npm run db:init` | Initialize database schema |
-| `npm run db:seed` | Seed database with sample data |
-| `npm run db:reset` | Reset database completely |
-| `npm run lint` | Run ESLint validation |
+
+| Script             | Description                           |
+|--------------------|---------------------------------------|
+| `npm run dev`      | Run server with nodemon (auto-reload) |
+| `npm start`        | Run server (production-style)         |
+| `npm run db:init`  | Initialize database schema            |
+| `npm run db:seed`  | Seed database with sample data        |
+| `npm run db:reset` | Reset database completely             |
+| `npm run lint`     | Run ESLint validation                 |
 
 ---
 
 ## 💻 Client (Frontend)
 
 ### Folder Structure (matches your repo)
+
 ```
 client/
 ├── src/
@@ -153,32 +164,36 @@ client/
 ```
 
 ### Tech Stack
-| Layer | Technology |
-|-------|-------------|
+
+| Layer    | Technology                     |
+|----------|--------------------------------|
 | Frontend | React 18, React Router 6, Vite |
-| Backend | Node.js, Express.js |
-| Database | SQLite 3 |
-| Auth | JSON Web Token (JWT) |
-| Tools | ESLint, Prettier |
-| Styling | CSS |
+| Backend  | Node.js, Express.js            |
+| Database | SQLite 3                       |
+| Auth     | JSON Web Token (JWT)           |
+| Tools    | ESLint, Prettier               |
+| Styling  | CSS                            |
 
 ---
 
 ## ⚙️ Setup Instructions
 
 ### 1️⃣ Clone the Repository
+
 ```bash
 git clone https://github.com/<your-username>/intern-school.git
 cd intern-school
 ```
 
 ### 2️⃣ Install Dependencies
+
 ```bash
 cd server && npm install
 cd ../client && npm install
 ```
 
 ### 3️⃣ Database Setup
+
 ```bash
 cd ../server
 npm run db:reset
@@ -190,6 +205,7 @@ npm run db:seed
 ### 4️⃣ Environment Variables
 
 **Server (`server/.env`):**
+
 ```
 PORT=3001
 JWT_SECRET=supersecretkey
@@ -197,6 +213,7 @@ DATABASE_URL=./src/db/school.db
 ```
 
 **Client (`client/.env`):**
+
 ```
 VITE_API_BASE=http://localhost:3001
 ```
@@ -204,12 +221,14 @@ VITE_API_BASE=http://localhost:3001
 ### 5️⃣ Run the App
 
 **Backend (API on http://localhost:3001):**
+
 ```bash
 cd server
 npm start
 ```
 
 **Frontend (Vite on http://localhost:5173):**
+
 ```bash
 cd ../client
 npm run dev
@@ -219,19 +238,20 @@ npm run dev
 
 ## 🧾 API Highlights
 
-| Method | Endpoint | Description |
-|---------|-----------|-------------|
-| GET | `/api/courses` | List all courses |
-| GET | `/api/courses/:id` | View course details |
-| POST | `/api/courses` | Create course (Teacher only) |
-| GET | `/api/courses/:courseId/quizzes` | List quizzes for a course |
-| POST | `/api/courses/:id/enroll` | Enroll student |
-| GET | `/api/progress/:studentId` | View quiz attempts |
-| POST | `/api/progress` | Submit quiz attempt |
+| Method | Endpoint                         | Description                  |
+|--------|----------------------------------|------------------------------|
+| GET    | `/api/courses`                   | List all courses             |
+| GET    | `/api/courses/:id`               | View course details          |
+| POST   | `/api/courses`                   | Create course (Teacher only) |
+| GET    | `/api/courses/:courseId/quizzes` | List quizzes for a course    |
+| POST   | `/api/courses/:id/enroll`        | Enroll student               |
+| GET    | `/api/progress/:studentId`       | View quiz attempts           |
+| POST   | `/api/progress`                  | Submit quiz attempt          |
 
 ---
 
 ## 🧱 Design Principles
+
 - Clear modular pattern: **DAO → Service → Controller → Route**
 - Centralized error handling and validation middleware
 - JWT authentication and role-based protection
@@ -242,17 +262,59 @@ npm run dev
 
 ## 📅 Internship Timeline
 
-| Week | Focus | Deliverables |
-|------|--------|--------------|
-| 1 | Database & Schema | schema.sql, seed.sql |
-| 2 | Backend REST API | Auth, Courses, Quizzes |
-| 3 | Frontend Integration | Auth, Course Pages |
-| 4 | Progress Tracking | Attempts, Profile, README |
+| Week | Focus                | Deliverables              |
+|------|----------------------|---------------------------|
+| 1    | Database & Schema    | schema.sql, seed.sql      |
+| 2    | Backend REST API     | Auth, Courses, Quizzes    |
+| 3    | Frontend Integration | Auth, Course Pages        |
+| 4    | Progress Tracking    | Attempts, Profile, README |
+
+---
+
+# School Management Web App
+
+---
+
+## 🖼️ Screenshots
+
+> Located in `client/public/screens/`
+
+### Login
+
+<img src="client/public/screens/client-login.png" alt="Login" width="500"/>
+
+### Teacher Dashboard
+
+<img src="client/public/screens/teacher-dashboard.png" alt="Teacher Dashboard" width="500"/>
+
+### Courses List (Teacher)
+
+<img src="client/public/screens/courses-list.png" alt="Courses List" width="500"/>
+
+### Course Detail (Teacher)
+
+<img src="client/public/screens/course-detail.png" alt="Course Detail" width="500"/>
+
+### Students List (Teacher)
+
+<img src="client/public/screens/students-list.png" alt="Students List" width="500"/>
+
+### Quiz (Student)
+
+<img src="client/public/screens/quiz.png" alt="Quiz" width="500"/>
+
+### Quiz Result (Student)
+
+<img src="client/public/screens/quiz-res.png" alt="Quiz Result" width="500"/>
+
+### My Profile
+
+<img src="client/public/screens/profile.png" alt="My Profile" width="500"/>
 
 ---
 
 ## 👩‍💻 Author
 
-**Fy Andria**  
+**Fy Andria**
 
 ---
