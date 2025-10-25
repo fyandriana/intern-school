@@ -1,8 +1,8 @@
 -- Turns on enforcement of FOREIGN KEY constraints.
 -- To avoid orphan rows insertion and deletion of a parent row that have children reference
-
 PRAGMA foreign_keys = ON;
 PRAGMA journal_mode = WAL;
+
 -- Drop existing tables (safe re-run)
 DROP TABLE IF EXISTS progress;
 DROP TABLE IF EXISTS quizzes;
@@ -48,15 +48,18 @@ CREATE TABLE IF NOT EXISTS quizzes
 -- PROGRESS (per student per course)
 -- status: enrolled | in_progress | completed
 -- score: 0..100 (nullable until quiz submitted/scored)
+-- quizAttempts: JSON array of quiz submissions per course, each entry like:
+--   [{"attempt":1,"answers":[{"q":1,"a":2},{"q":2,"a":1}],"score":70,"submitted_at":"2025-10-24 14:30"}]
 CREATE TABLE IF NOT EXISTS progress
 (
-	id         INTEGER PRIMARY KEY AUTOINCREMENT,
-	studentId  INTEGER NOT NULL,
-	courseId   INTEGER NOT NULL,
-	status     TEXT    NOT NULL CHECK ( status IN ('enrolled', 'in_progress', 'completed')),
-	score      REAL CHECK (score IS NULL OR (score >= 0 AND score <= 100)),
-	created_at TEXT DEFAULT (datetime('now')),
-	UNIQUE (studentId, courseId), -- one row per student-course
+	id           INTEGER PRIMARY KEY AUTOINCREMENT,
+	studentId    INTEGER NOT NULL,
+	courseId     INTEGER NOT NULL,
+	status       TEXT    NOT NULL CHECK ( status IN ('enrolled', 'in_progress', 'completed')),
+	score        REAL CHECK (score IS NULL OR (score >= 0 AND score <= 100)),
+	quizAttempts TEXT DEFAULT '[]' CHECK (json_valid(quizAttempts)), -- store all quiz submissions as JSON
+	created_at   TEXT DEFAULT (datetime('now')),
+	UNIQUE (studentId, courseId),                                    -- one row per student-course
 	FOREIGN KEY (studentId) REFERENCES users (id) ON DELETE CASCADE ON UPDATE CASCADE,
 	FOREIGN KEY (courseId) REFERENCES courses (id) ON DELETE CASCADE ON UPDATE CASCADE
 );
@@ -75,7 +78,7 @@ CREATE TRIGGER IF NOT EXISTS trg_courses_teacher_role
 	FOR EACH ROW
 BEGIN
 	SELECT CASE
-		WHEN (SELECT role FROM users WHERE id = NEW.teacherId) != 'Teacher'
+		       WHEN (SELECT role FROM users WHERE id = NEW.teacherId) != 'Teacher'
 			       THEN RAISE(ABORT, 'teacherId must reference a user with role=Teacher') END;
 END;
 
@@ -86,6 +89,6 @@ CREATE TRIGGER IF NOT EXISTS trg_progress_student_role
 	FOR EACH ROW
 BEGIN
 	SELECT CASE
-		WHEN (SELECT role FROM users WHERE id = NEW.studentId) != 'Student'
+		       WHEN (SELECT role FROM users WHERE id = NEW.studentId) != 'Student'
 			       THEN RAISE(ABORT, 'studentId must reference a user with role=Student') END;
 END;

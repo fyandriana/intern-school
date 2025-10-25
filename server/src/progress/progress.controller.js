@@ -1,54 +1,72 @@
 import {
-    createQuizzSvc,
-    getQuizzByIdSvc,
-    listQuizzesSvc,
-    updateQuizzSvc,
-    deleteQuizzSvc
-} from "../quizzes/quizzes.service.js";
+  enrollSvc,
+  getEnrollmentSvc,
+  listMyCoursesSvc,
+  updateEnrollmentSvc,
+  listAllCoursesSvc,
+} from "./progress.service.js";
 
-export function createQuizzHandler(req, res, next) {
-    try {
-        const quizz = createQuizzSvc(req.body);
-        res.status(201).json(quizz);
-    } catch (err) {
-        next(err);
+export async function enrollHandler(req, res, next) {
+  try {
+    const studentId = req.user.id; // self
+    const { courseId } = req.body || {};
+    const data = enrollSvc({ studentId, courseId: Number(courseId) });
+    res.json({ ok: true, data });
+  } catch (e) {
+    next(e);
+  }
+}
+
+export async function getEnrollmentHandler(req, res, next) {
+  try {
+    const studentId = req.user.id;
+    const courseId = Number(req.params.courseId);
+    const data = getEnrollmentSvc({ studentId, courseId });
+    res.json({ ok: true, data });
+  } catch (err) {
+    if (err.code === "NOT_FOUND" || err.name === "NotFoundError") {
+      return res.status(404).json({ code: "NOT_FOUND", message: "Not Enrolled" });
     }
+    return next(err);
+  }
 }
 
-export function listQuizzesHandler(req, res, next) {
-    try {
-        const {limit, offset, role} = req.query;
-        const items = listQuizzesSvc({limit, offset});
-        res.json({items});
-    } catch (err) {
-        next(err);
+export async function listMyCoursesHandler(req, res, next) {
+  try {
+    const studentId = req.user.id;
+    const limit = Number(req.query.limit) || 20;
+    const offset = Number(req.query.offset) || 0;
+    const data = listMyCoursesSvc({ studentId, limit, offset });
+    res.json({ ok: true, items: data, total: data.length, limit, offset });
+  } catch (e) {
+    next(e);
+  }
+}
+
+export async function listAllCoursesHandler(req, res, next) {
+  try {
+    const studentId = req.user.id;
+    const limit = Number(req.query.limit) || 20;
+    const offset = Number(req.query.offset) || 0;
+    const data = listAllCoursesSvc({ studentId, limit, offset });
+    res.json({ ok: true, items: data, total: data.length, limit, offset });
+  } catch (e) {
+    next(e);
+  }
+}
+
+export async function updateEnrollmentHandler(req, res, next) {
+  try {
+    const studentId = req.user.id;
+    const courseId = Number(req.params.courseId);
+    const { status = null, score = null } = req.body || {};
+    const data = updateEnrollmentSvc({ studentId, courseId, status, score });
+    res.json({ ok: true, data });
+  } catch (err) {
+    // If service threw NotFoundError, normalize to 200 {enrolled:false}
+    if (err.code === "NOT_FOUND" || err.name === "NotFoundError") {
+      return res.json({ enrolled: false, enrollment: null });
     }
-}
-
-export function getQuizzHandler(req, res, next) {
-    try {
-
-        const id = Number(req.params.id);
-        const quizz = getQuizzByIdSvc(id);
-        res.json(quizz);
-    } catch (err) {
-        next(err);
-    }
-}
-
-
-export function updateQuizzHandler(req, res, next) {
-    try {
-        const id = Number(req.params.id);
-        const updated = updateQuizzSvc(id, req.body);
-        res.json(updated);
-    } catch (err) { next(err); }
-}
-
-export function deleteQuizzHandler(req, res, next) {
-    try {
-        const id = Number(req.params.id);
-        const result = deleteQuizzSvc(id); // { deleted: true }
-        res.json(result);
-    } catch (err) { next(err); }
+    return next(err);
+  }
 }

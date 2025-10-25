@@ -34,19 +34,31 @@
 /* =========================
    Resets & base
 ========================= */
-* { box-sizing: border-box; }
+* {
+    box-sizing: border-box;
+}
 
 body {
     margin: 0;
     background: var(--bg-app);
     color: var(--text);
 }
-a:hover{color:  var(--brand);}
+
+a {
+    margin: auto 5px;
+    text-decoration: none;
+    color: var(--brand-600);
+}
+
+a:hover {
+    color: var(--brand);
+}
+
 /* Vite demo root — keep, but our containers reset text-align */
 #root {
-   /* max-width: 1280px; */
+    /* max-width: 1280px; */
     margin: 0 auto;
-   /* padding: 2rem; */
+    /* padding: 2rem; */
     text-align: center;
 }
 
@@ -64,16 +76,35 @@ header {
     justify-content: space-between;
     gap: 16px;
 }
-header h1 { margin: 0; font-size: 1.5rem; }
 
-main { margin-top: 20px; }
+header h1 {
+    margin: 0;
+    font-size: 1.5rem;
+}
 
-footer { margin-top: 24px; color: #666; }
+main {
+    /*margin-top: 20px;*/
+}
+
+footer {
+    padding: 10px;
+    color: #666;
+    font-size: small;
+}
 
 /* Utilities */
-.stack { display: grid; gap: 12px; }
-.mt-0 { margin-top: 0; }
-.table-wrap { overflow: auto; }
+.stack {
+    display: grid;
+    gap: 12px;
+}
+
+.mt-0 {
+    margin-top: 0;
+}
+
+.table-wrap {
+    overflow: auto;
+}
 
 /* =========================
    Buttons
@@ -88,17 +119,33 @@ button,
     font: inherit;
     margin-top: 10px;
 }
+
 button:hover,
-.btn:hover { background: #f0f0f0; }
-button.active { border-color: #333; }
+.btn:hover {
+    background: #f0f0f0;
+}
+
+button.active {
+    border-color: #333;
+}
 
 .btn--primary {
     border-color: var(--brand);
     background: var(--brand);
     color: #fff;
 }
-.btn--primary:hover { background: var(--brand-600); }
-.btn--block { width: 100%; }
+
+.btn--primary:hover {
+    background: var(--brand-600);
+}
+
+.btn--block {
+    width: 100%;
+}
+
+.actions-button {
+    text-align: end;
+}
 
 /* =========================
    Cards
@@ -112,7 +159,9 @@ button.active { border-color: #333; }
 }
 
 /* If you still want Vite demo spacing on a card, add .card--demo */
-.card--demo { padding: 2em; }
+.card--demo {
+    padding: 2em;
+}
 
 .card--form {
     padding: 20px;
@@ -147,22 +196,59 @@ textarea:focus,
 input:focus {
     outline: none;
     border-color: var(--brand);
-    box-shadow: 0 0 0 3px rgba(59,130,246,.15);
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, .15);
 }
 
-.input.is-invalid { border-color: #ef4444; }
-.input.is-valid { border-color: #10b981; }
+.input.is-invalid {
+    border-color: #ef4444;
+}
 
-.form__header { margin-bottom: 16px; }
-.form__title { margin: 0 0 6px 0; font-size: 20px; }
-.form__subtitle { margin: 0; color: var(--muted); font-size: 14px; }
+.input.is-valid {
+    border-color: #10b981;
+}
 
-.form__group { display: grid; gap: 6px; }
-.label { font-weight: 600; font-size: 14px; text-align: left}
-.hint { color: var(--muted); font-size: 12px; }
+.form__header {
+    margin-bottom: 16px;
+}
 
-.input-group { position: relative; display: flex; padding: 8px 0}
-.input-group .input { flex: 1; padding-right: 44px;  }
+.form__title {
+    margin: 0 0 6px 0;
+    font-size: 20px;
+}
+
+.form__subtitle {
+    margin: 0;
+    color: var(--muted);
+    font-size: 14px;
+}
+
+.form__group {
+    display: grid;
+    gap: 6px;
+}
+
+.label {
+    font-weight: 600;
+    font-size: 14px;
+    text-align: left
+}
+
+.hint {
+    color: var(--muted);
+    font-size: 12px;
+}
+
+.input-group {
+    position: relative;
+    display: flex;
+    padding: 8px 0
+}
+
+.input-group .input {
+    flex: 1;
+    padding-right: 44px;
+}
+
 .input-group__btn {
     position: absolute;
     right: 1px;
@@ -176,9 +262,16 @@ input:focus {
     font-size: 12px;
     font-weight: 600;
 }
-.input-group__btn:hover { background: #e5e7eb; }
 
-.form__footer { margin-top: 12px; color: var(--muted); font-size: 14px; }
+.input-group__btn:hover {
+    background: #e5e7eb;
+}
+
+.form__footer {
+    margin-top: 12px;
+    color: var(--muted);
+    font-size: 14px;
+}
 
 .alert {
     padding: 10px 12px;
@@ -187,16 +280,35 @@ input:focus {
     background: var(--bg-muted);
     font-size: 14px;
 }
-.alert--error { border-color: var(--danger-br); background: var(--danger-bg); color: var(--danger); }
-.alert--success { border-color: var(--success-br); background: var(--success-bg); color: var(--success); }
 
-.error { color: var(--danger); }
-.success { color: #0a7a3d; }
+.alert--error {
+    border-color: var(--danger-br);
+    background: var(--danger-bg);
+    color: var(--danger);
+}
+
+.alert--success {
+    border-color: var(--success-br);
+    background: var(--success-bg);
+    color: var(--success);
+}
+
+.error {
+    color: var(--danger);
+}
+
+.success {
+    color: #0a7a3d;
+}
 
 /* =========================
    Tables
 ========================= */
-table { width: 100%; border-collapse: collapse; }
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
 th, td {
     text-align: left;
     padding: 8px;
@@ -216,7 +328,9 @@ th, td {
 /* =========================
    Modal
 ========================= */
-.body--modal-open { overflow: hidden; }
+.body--modal-open {
+    overflow: hidden;
+}
 
 .modal-backdrop {
     position: fixed;
@@ -262,11 +376,34 @@ th, td {
     cursor: pointer;
 }
 
-.modal-content { max-height: 70vh; overflow: auto; }
-.modal-content ul li { list-style: none; }
+.modal-content {
+    max-height: 70vh;
+    overflow: auto;
+}
 
-@keyframes fadeIn { from { opacity: 0 } to { opacity: 1 } }
-@keyframes scaleIn { from { transform: translateY(4px) scale(0.98); opacity: 0.98 } to { transform: translateY(0) scale(1); opacity: 1 } }
+.modal-content ul li {
+    list-style: none;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0
+    }
+    to {
+        opacity: 1
+    }
+}
+
+@keyframes scaleIn {
+    from {
+        transform: translateY(4px) scale(0.98);
+        opacity: 0.98
+    }
+    to {
+        transform: translateY(0) scale(1);
+        opacity: 1
+    }
+}
 
 /* =========================
    Nav
@@ -274,11 +411,14 @@ th, td {
 .nav {
     display: flex;
     align-items: center;
+    flex-grow: 1; /* Allow the nav to grow and fill available space */
+    justify-content: flex-end;
     gap: 10px;
     padding: 8px;
     border-bottom: 1px solid var(--border);
     background: var(--bg);
     box-shadow: var(--shadow-1);
+    margin-bottom: 24px;
 }
 
 .nav__brand {
@@ -288,7 +428,9 @@ th, td {
     border-radius: 10px;
 }
 
-.nav__spacer { flex: 1; }
+.nav__spacer {
+    flex: 1;
+}
 
 .nav a,
 .nav .nav__link {
@@ -304,7 +446,10 @@ th, td {
 }
 
 .nav a:hover,
-.nav .nav__link:hover { background: #f3f4f6; }
+.nav a.active,
+.nav .nav__link:hover {
+    background: #f3f4f6;
+}
 
 .nav .nav__link--active {
     background: var(--indigo-100);
@@ -312,8 +457,13 @@ th, td {
 }
 
 @media (max-width: 520px) {
-    .nav { flex-wrap: wrap; }
-    .nav__spacer { display: none; }
+    .nav {
+        flex-wrap: wrap;
+    }
+
+    .nav__spacer {
+        display: none;
+    }
 }
 
 /* =========================
@@ -325,13 +475,24 @@ th, td {
     will-change: filter;
     transition: filter 300ms;
 }
-.logo:hover { filter: drop-shadow(0 0 2em #646cffaa); }
-.logo.react:hover { filter: drop-shadow(0 0 2em #61dafbaa); }
+
+.logo:hover {
+    filter: drop-shadow(0 0 2em #646cffaa);
+}
+
+.logo.react:hover {
+    filter: drop-shadow(0 0 2em #61dafbaa);
+}
 
 @keyframes logo-spin {
-    from { transform: rotate(0deg); }
-    to   { transform: rotate(360deg); }
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
 }
+
 @media (prefers-reduced-motion: no-preference) {
     a:nth-of-type(2) .logo {
         animation: logo-spin infinite 20s linear;
@@ -339,7 +500,11 @@ th, td {
 }
 
 /* Vite demo helper */
-.read-the-docs { color: #888; }
+.read-the-docs {
+    color: #888;
+}
 
 /* Normalize anchor in case of empty rule from snippet */
-a { color: inherit; }
+a {
+    color: inherit;
+}

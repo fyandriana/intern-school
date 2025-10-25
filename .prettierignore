@@ -1,5 +1,19 @@
+# global ignores
 node_modules
 dist
+build
+coverage
+.tmp
+.out
+.vscode
+.idea
+
+# per-package (redundant but explicit)
+client/node_modules
 client/dist
+client/build
+client/.vite
+
+server/node_modules
 server/dist
-*.db
+server/build

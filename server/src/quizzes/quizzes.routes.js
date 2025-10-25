@@ -1,42 +1,34 @@
-// server/src/users/users.routes.js
 import { Router } from "express";
 import {
-    createQuizzHandler,
-    listQuizzesHandler,
-    getQuizzHandler,
-    updateQuizzHandler,
-    deleteQuizzHandler,
+  createQuizHandler,
+  listQuizzesHandler,
+  getQuizHandler,
+  updateQuizHandler,
+  deleteQuizHandler,
 } from "./quizzes.controller.js";
+import { validateIntParam } from "../middleware/validator.js";
+import { authRequired } from "../middleware/authRequired.js";
+import { resolveTeacher } from "../middleware/resolve.js";
 
-const r = Router();
+const r = Router({ mergeParams: true });
 
 // CRUD
-r.post("/", createQuizzHandler);                 // POST /api/quizzes
-r.get("/", listQuizzesHandler);                   // GET  /api/quizzes?role=&limit=&offset=
-//r.get("/:id(\\d+)", getQuizzHandler);            // GET  /api/quizzes/123
+r.post("/", createQuizHandler); // POST /api/quizzes
+r.get("/", listQuizzesHandler); // GET  /api/quizzes?role=&limit=&offset=
 
-r.get("/:id", (req, res, next) => {
-    const id = Number(req.params.id);
-    if (!Number.isInteger(id) || id < 1) {
-        return res.status(400).json({ code: "VALIDATION_ERROR", message: "Invalid id" });
-    }
-    return getUserHandler(req, res, next);
-});
-r.patch("/:id", (req, res, next) => {
-    const id = Number(req.params.id);
-    if (!Number.isInteger(id) || id < 1) {
-        return res.status(400).json({ code: "VALIDATION_ERROR", message: "Invalid id" });
-    }
-    return updateQuizzHandler(req, res, next);
-});
-// r.patch("/:id(\\d+)", updateQuizzHandler);       // PATCH /api/quizzes/123
-
-r.delete("/:id", (req, res, next) => {
-    const id = Number(req.params.id);
-    if (!Number.isInteger(id) || id < 1) {
-        return res.status(400).json({ code: "VALIDATION_ERROR", message: "Invalid id" });
-    }
-    return deleteQuizzHandler(req, res, next);
+r.get("/:id", validateIntParam("id"), (req, res, next) => {
+  return getQuizHandler(req, res, next);
 });
 
+r.patch("/:id", authRequired, resolveTeacher, validateIntParam("id"), (req, res, next) => {
+  return updateQuizHandler(req, res, next);
+});
+
+r.put("/:id", authRequired, resolveTeacher, validateIntParam("id"), (req, res, next) => {
+  return updateQuizHandler(req, res, next);
+});
+
+r.delete("/:id", validateIntParam("id"), (req, res, next) => {
+  return deleteQuizHandler(req, res, next);
+});
 export default r;

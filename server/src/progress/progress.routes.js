@@ -1,42 +1,23 @@
-// server/src/users/users.routes.js
 import { Router } from "express";
+import { authRequired } from "../middleware/authRequired.js";
+import { validateIntParam } from "../middleware/validator.js";
+import { requireRole } from "../middleware/resolve.js";
 import {
-    createQuizzHandler,
-    listQuizzesHandler,
-    getQuizzHandler,
-    updateQuizzHandler,
-    deleteQuizzHandler,
+  enrollHandler,
+  getEnrollmentHandler,
+  listMyCoursesHandler,
+  updateEnrollmentHandler,
+  listAllCoursesHandler,
 } from "./progress.controller.js";
 
 const r = Router();
 
-// CRUD
-r.post("/", createQuizzHandler);                 // POST /api/quizzes
-r.get("/", listQuizzesHandler);                   // GET  /api/quizzes?role=&limit=&offset=
-//r.get("/:id(\\d+)", getQuizzHandler);            // GET  /api/quizzes/123
-
-r.get("/:id", (req, res, next) => {
-    const id = Number(req.params.id);
-    if (!Number.isInteger(id) || id < 1) {
-        return res.status(400).json({ code: "VALIDATION_ERROR", message: "Invalid id" });
-    }
-    return getUserHandler(req, res, next);
-});
-r.patch("/:id", (req, res, next) => {
-    const id = Number(req.params.id);
-    if (!Number.isInteger(id) || id < 1) {
-        return res.status(400).json({ code: "VALIDATION_ERROR", message: "Invalid id" });
-    }
-    return updateQuizzHandler(req, res, next);
-});
-// r.patch("/:id(\\d+)", updateQuizzHandler);       // PATCH /api/quizzes/123
-
-r.delete("/:id", (req, res, next) => {
-    const id = Number(req.params.id);
-    if (!Number.isInteger(id) || id < 1) {
-        return res.status(400).json({ code: "VALIDATION_ERROR", message: "Invalid id" });
-    }
-    return deleteQuizzHandler(req, res, next);
-});
+// Student-only
+r.use(authRequired, requireRole("Student"));
+r.post("/enroll", enrollHandler); // body: { courseId }
+r.get("/enrollment/:courseId", validateIntParam("courseId"), getEnrollmentHandler);
+r.patch("/enrollment/:courseId", validateIntParam("courseId"), updateEnrollmentHandler);
+r.get("/my-courses", listMyCoursesHandler); // supports ?limit=&offset=
+r.get("/courses", listAllCoursesHandler); // supports ?limit=&offset=
 
 export default r;
