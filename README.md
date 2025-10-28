@@ -267,11 +267,20 @@ npm run dev
 | 1    | Database & Schema    | schema.sql, seed.sql      |
 | 2    | Backend REST API     | Auth, Courses, Quizzes    |
 | 3    | Frontend Integration | Auth, Course Pages        |
-| 4    | Progress Tracking    | Attempts, Profile, README |
+| 4    | Frontend Integration | Profiles(teacher/student) |
+| 5    | Progress Tracking    | Attempts, README          |
 
 ---
 
-# School Management Web App
+## 🔑 Access Accounts
+
+You can use the following demo accounts to log in and explore the app:
+
+| Role | Email | Password |
+|------|--------|-----------|
+| 👩‍🏫 **Teacher** | alice.martin@example.com | alice.martin@example.com |
+| 🎓 **Student** | david.lee@example.com | david.lee@example.com |
+
 
 ---
 
